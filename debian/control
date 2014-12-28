@@ -1,0 +1,13 @@
+Source: apt-antix
+Section: system
+Priority: required
+Maintainer: anticapitalista <antiX@operamail.com>
+Build-Depends: debhelper (>= 9.20120115)
+Standards-Version: 3.9.4
+Homepage: http://antix.mepis.org
+
+Package: apt-antix
+Architecture: all
+Replaces: desktop-defaults-core-antix (<< 0.3.2), desktop-defaults-base-antix (<< 0.3.9), desktop-defaults-full-antix (<< 0.3.9.1) 
+Breaks: desktop-defaults-core-antix (<< 0.3.2), desktop-defaults-base-antix (<< 0.3.9), desktop-defaults-full-antix (<< 0.3.9.1) 
+Description: apt defaults for antiX.

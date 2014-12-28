@@ -1,0 +1,6 @@
+antix.list                     /etc/apt/sources.list.d
+debian.list                    /etc/apt/sources.list.d
+various.list                   /etc/apt/sources.list.d
+mepis.list                     /etc/apt/sources.list.d
+changelog.gz                   /usr/share/doc/apt-antix 
+copyright                      /usr/share/doc/apt-antix 

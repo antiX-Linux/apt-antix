@@ -1,0 +1,21 @@
+apt-antix (0.2.0) unstable; urgency=low 
+ 
+  * Make changes for antiX-14 series (Jessie/Testing)
+
+ -- anticapitalista <antiX@operamail.com>  Fri, 19 Dec 2014 17:59:00 +0200
+
+
+apt-antix (0.1.1) unstable; urgency=low 
+ 
+  * Removed Mate repo.
+  * Added mepis.list file.
+
+ -- anticapitalista <antiX@operamail.com>  Fri, 19 Dec 2014 17:06:00 +0200
+
+
+apt-antix (0.1.0) unstable; urgency=low 
+ 
+  * Initial Release.
+
+ -- anticapitalista <antiX@operamail.com>  Fri, 25 Oct 2013 18:30:00 +0200
+
