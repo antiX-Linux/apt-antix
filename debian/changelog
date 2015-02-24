@@ -1,3 +1,10 @@
+apt-antix (0.2.1) unstable; urgency=low 
+ 
+  * Default repos set to Jessie/Testing antiX-15 series.
+
+ -- anticapitalista <antiX@operamail.com>  Tue, 17 Feb 2015 13:06:00 +0200
+
+
 apt-antix (0.2.0) unstable; urgency=low 
  
   * Make changes for antiX-14 series (Jessie/Testing)
