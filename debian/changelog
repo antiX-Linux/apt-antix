@@ -1,3 +1,12 @@
+apt-antix (0.2.2) unstable; urgency=low 
+ 
+  * Added new xfce4.12 repo to mepis.list
+  * Included siduction reppo (uncommented)
+  * Added antiX-15 coment to antix.list
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 19 Apr 2015 16:00:00 +0200
+
+
 apt-antix (0.2.1) unstable; urgency=low 
  
   * Default repos set to Jessie/Testing antiX-15 series.

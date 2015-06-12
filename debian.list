@@ -1,5 +1,5 @@
 # Note:If you want maximum stability, keep to the default Stable/Jessie repos.
-# Jessie is soon to be the new stable release and will only recieve security 
+# Jessie is the new stable release and will only recieve security 
 # updates, while Testing will be 'rolling'.
 
 # Debian Stable. Default for antiX-15.
@@ -16,8 +16,8 @@ deb http://security.debian.org/ jessie/updates main contrib non-free
 
 # Multimedia Stable and Testing
 # Use to install libdvdcss2 and codecs.
-#deb http://www.deb-multimedia.org testing main non-free
 #deb http://www.deb-multimedia.org jessie main non-free
+#deb http://www.deb-multimedia.org testing main non-free
 
 ###### Debian Unstable/Sid##########
 ###### Use at your own risk! ########
