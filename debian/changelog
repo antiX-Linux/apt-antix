@@ -1,3 +1,11 @@
+apt-antix (0.2.3) unstable; urgency=low 
+ 
+  * Added localize-repo - removed from live-init-antix_all
+  * Removed siduction repo
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 10 Jan 2016 21:45:00 +0200
+
+
 apt-antix (0.2.2) unstable; urgency=low 
  
   * Added new xfce4.12 repo to mepis.list
