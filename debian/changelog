@@ -1,3 +1,9 @@
+apt-antix (0.2.5) unstable; urgency=medium
+
+  * All localize-repo to accept options after the main argument  
+
+ -- anticapitalista <antix@operamail.com>  Tue, 10 May 2016 23:21:06 +0300
+
 apt-antix (0.2.4) unstable; urgency=medium
 
   * Many improvements to localiz-repo
