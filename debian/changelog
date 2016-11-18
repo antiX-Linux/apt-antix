@@ -1,3 +1,9 @@
+apt-antix (0.2.6) unstable; urgency=medium
+
+  * Added Kazakh to localise-repo
+
+ -- anticapitalista <antix@operamail.com>  Fri, 18 Nov 2016 12:33:31 +0200
+
 apt-antix (0.2.5) unstable; urgency=medium
 
   * All localize-repo to accept options after the main argument  

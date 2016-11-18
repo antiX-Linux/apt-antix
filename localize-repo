@@ -71,50 +71,75 @@ Usage
 }
 
 main() {
+    local param val short_stack="cdhHipqrv"
+    while [ $# -gt 0 -a -n "$1" -a -z "${1##-*}" ]; do
+        param=${1#-}
+        shift
 
-    [ $# -eq 0 ] && usage
+        case $param in
+            [$short_stack][$short_stack]*)
+                if [ -z "${param//[$short_stack]/}" ]; then
+                    set -- $(echo $param | sed -r 's/([a-zA-Z])/ -\1 /g') "$@"
+                    continue
+                fi;;
+        esac
 
-    local SHIFT SHORT_STACK="cdhHipqrv"
+        case $param in
+          -dir|-ignore|[di]) [ $# -lt 1 ] && fatal "Expected a parameter after: -$param"
+                    val=$1
+                    [ -n "$val" -a -z "${val##-*}" ] \
+                        && fatal "Suspicious parameter after -$param: $val"
 
-    # Allow options before and after the command
-    read_params "$@"
-    shift $SHIFT
+                    shift           ;;
+              *=*)  val=${param#*=} ;;
+                *)  val="???"       ;;
+        esac
 
-    [ $# -gt 0 ] || fatal "Expected a command or device name"
+        case $param in
+          -ignore|i) IGNORE=$val                       ;;
+      -ignore=*|i=*) IGNORE=$val                       ;;
+           -codes|c) CODES_ONLY=true                   ;;
+         -dir=*|d=*) SDIR=$val                         ;;
+             -dir|d) SDIR=$val                         ;;
+            -help|h) usage                             ;;
+           -hosts|H) HOSTS_ONLY=true                   ;;
+         -pretend|p) PRETEND=true                      ;;
+           -quiet|q) QUIET=true                        ;;
+          -random|r) RANDOMIZE=true                       ;;
+         -verbose|v) VERBOSE=true                      ;;
+                  *) fatal "Unknown argument: -$param" ;;
+        esac
+    done
 
-    local timezone=$1
-    shift
+    [ $# -lt 1 ] && usage
+    [ $# -gt 1 ] && fatal "Only expected one command line argument"
 
-    # Allow options before and after the command
-    read_params "$@"
-    shift $SHIFT
+    local tz=$1
 
-    [ $# -gt 0 ] && fatal "Expected only one command. Got: $timezone $*"
-
-    case $timezone in
-        */UTC) not_setting $timezone ;;
+    case $tz in
+        */UTC) not_setting $tz ;;
     esac
 
     local tz_file=/etc/timezone
-    if [ "$timezone" = "default" ]; then
+    if [ "$tz" = "default" ]; then
         test -r $tz_file || fatal "Could not find file $tz_file"
-        read timezone 2>/dev/null <$tz_file
-        vsay "Current timezone: $timezone"
+        read tz 2>/dev/null <$tz_file
+        vsay "Current timezone: $tz"
     fi
 
-    [ ${#timezone} -lt 1 ] && fatal "Timezone or country code too short: $timezone"
+    [ ${#tz} -lt 1 ] && fatal "Timezone or country code too short: $tz"
 
-    case $timezone in
-        [a-zA-Z][a-zA-Z]) country_code_to_timezone $timezone
-                          timezone=$NEW_TZ ;;
+    case $tz in
+        [a-zA-Z][a-zA-Z]) country_code_to_timezone $tz
+                          tz=$NEW_TZ ;;
     esac
 
     local deb_code mx_order
-    get_codes $timezone
+    get_codes $tz
 
     vsay "deb mirror: $deb_code"
-    [ ${#deb_code} -eq 0 ] && fatal "No country code found for timezone: $timezone"
-    [ ${#mx_order} -eq 0 ] && fatal "No MX/antiX mirrors found for timezone: $timezone"
+    [ ${#deb_code} -eq 0 ] && fatal "No country code found for timezone: $tz"
+    [ ${#mx_order} -eq 0 ] && fatal "No MX/antiX mirrors found for timezone: $tz"
 
     [ "$CODES_ONLY" ] && echo -e "MX/aX code: $mx_order\n  Deb code: $deb_code"
 
@@ -246,8 +271,8 @@ fatal() {
 }
 
 not_setting() {
-    local timezone=$1
-    printf "Not setting repository mirrors based on %s timezone\n"  "$timezone"
+    local tz=$1
+    printf "Not setting repository mirrors based on %s timezone\n"  "$tz"
     exit 0
 }
 
@@ -261,86 +286,9 @@ qsay() {
     echo "$*"
 }
 
-takes_param() {
-    case $1 in
-        -dir|-ignore|[di]) return 0 ;;
-    esac
-    return 1
-}
-
-eval_argument() {
-    local arg=$1 val=$2
-    case $arg in
-          -ignore|i) IGNORE=$val                       ;;
-      -ignore=*|i=*) IGNORE=$val                       ;;
-           -codes|c) CODES_ONLY=true                   ;;
-         -dir=*|d=*) SDIR=$val                         ;;
-             -dir|d) SDIR=$val                         ;;
-            -help|h) usage                             ;;
-           -hosts|H) HOSTS_ONLY=true                   ;;
-         -pretend|p) PRETEND=true                      ;;
-           -quiet|q) QUIET=true                        ;;
-          -random|r) RANDOMIZE=true                    ;;
-         -verbose|v) VERBOSE=true                      ;;
-                  *) fatal "Unknown argument: -$param" ;;
-    esac
-}
-#-------------------------------------------------------------------------------
-# Send "$@".  Expects
-#
-#   SHORT_STACK               variable, list of single chars that stack
-#   fatal(msg)                routine,  fatal("error message")
-#   takes_param(arg)          routine,  true if arg takes a value
-#   eval_argument(arg, [val]) routine,  do whatever you want with $arg and $val
-#
-# Sets "global" variable SHIFT to the number of arguments that have been read.
-#-------------------------------------------------------------------------------
-read_params() {
-    # Most of this code is boiler-plate for parsing cmdline args
-    SHIFT=0
-    # These are the single-char options that can stack
-
-    local arg val
-
-    # Loop through the cmdline args
-    while [ $# -gt 0 -a ${#1} -gt 0 -a -z "${1##-*}" ]; do
-        arg=${1#-}
-        shift
-        SHIFT=$((SHIFT + 1))
-
-        # Expand stacked single-char arguments
-        case $arg in
-            [$SHORT_STACK][$SHORT_STACK]*)
-                if echo "$arg" | grep -q "^[$SHORT_STACK]\+$"; then
-                    local old_cnt=$#
-                    set -- $(echo $arg | sed -r 's/([a-zA-Z])/ -\1 /g') "$@"
-                    SHIFT=$((SHIFT - $# + old_cnt))
-                    continue
-                fi;;
-        esac
-
-        # Deal with all options that take a parameter
-        if takes_param "$arg"; then
-            [ $# -lt 1 ] && fatal "Expected a parameter after: -$arg"
-            val=$1
-            [ -n "$val" -a -z "${val##-*}" ] \
-                && fatal "Suspicious argument after -$arg: $val"
-            SHIFT=$((SHIFT + 1))
-            shift
-        else
-            case $arg in
-                *=*)  val=${arg#*=} ;;
-                  *)  val="???"     ;;
-            esac
-        fi
-
-        eval_argument "$arg" "$val"
-    done
-}
-
 get_codes() {
-    local timezone=$1
-    case $timezone in
+    local tz=$1
+    case $tz in
                        Africa/Dakar) deb_code=pt ; mx_order=nl,gr,ut,ec,la,tw,nz ;;
                       Africa/Banjul) deb_code=pt ; mx_order=nl,gr,ut,ec,la,tw,nz ;;
                   Africa/Nouakchott) deb_code=pt ; mx_order=nl,gr,ut,ec,la,tw,nz ;;
@@ -583,7 +531,7 @@ get_codes() {
                       Asia/Tashkent) deb_code=cn ; mx_order=gr,nl,tw,ut,nz,la,ec ;;
                           Asia/Omsk) deb_code=ru ; mx_order=gr,nl,tw,ut,la,nz,ec ;;
                        Asia/Bishkek) deb_code=cn ; mx_order=gr,tw,nl,ut,nz,la,ec ;;
-                        Asia/Almaty) deb_code=cn ; mx_order=gr,tw,nl,ut,nz,la,ec ;;
+                        Asia/Almaty) deb_code=ru ; mx_order=gr,tw,nl,ut,nz,la,ec ;;
                        Asia/Colombo) deb_code=th ; mx_order=tw,gr,nl,nz,ut,la,ec ;;
                    Asia/Novosibirsk) deb_code=ru ; mx_order=tw,gr,nl,ut,la,nz,ec ;;
                        Asia/Barnaul) deb_code=ru ; mx_order=tw,gr,nl,ut,la,nz,ec ;;
