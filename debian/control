@@ -1,10 +1,10 @@
 Source: apt-antix
 Section: system
 Priority: required
-Maintainer: anticapitalista <antix@operamail.com>
+Maintainer: anticapitalista <antiX@operamail.com>
 Build-Depends: debhelper (>= 9.20120115)
 Standards-Version: 3.9.4
-Homepage: http://antix.mepis.org
+Homepage: https://github.com/BitJam/Localize-repo
 
 Package: apt-antix
 Architecture: all

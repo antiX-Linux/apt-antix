@@ -1,3 +1,15 @@
+apt-antix (0.2.8) unstable; urgency=medium
+
+  * New repos for antiX-17 stretch-based release
+
+ -- anticapitalista <antix@operamail.com>  Tue, 28 Feb 2017 15:43:08 +0200
+
+apt-antix (0.2.7) unstable; urgency=medium
+
+  * Add mirrors in France and Germany 
+
+ -- anticapitalista <antix@operamail.com>  Sun, 08 Jan 2017 16:24:11 +0200
+
 apt-antix (0.2.6) unstable; urgency=medium
 
   * Added Kazakh to localise-repo
