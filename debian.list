@@ -16,11 +16,11 @@ deb http://security.debian.org/ stretch/updates main contrib non-free
 
 # Multimedia Stable and Testing
 # Use to install libdvdcss2 and codecs.
-#deb http://www.deb-multimedia.org stetch main non-free
+#deb http://www.deb-multimedia.org stretch main non-free
 #deb http://www.deb-multimedia.org testing main non-free
 
 ###### Debian Unstable/Sid##########
 ###### Use at your own risk! ########
 #deb http://ftp.gr.debian.org/debian/ unstable main contrib non-free
-#deb http://www.deb-multimedia.org unstable main non-free
+#deb http://www.deb-multimedia.org sid main non-free
 

@@ -1,0 +1,12 @@
+# Use with tor network.
+#Debian Stretch
+#deb tor+http://vwakviie2ienjx6t.onion/debian/ stretch main contrib non-free 
+#deb tor+http://sgvtcaew4bxjd7ln.onion/ stretch/updates main contrib non-free 
+
+#Debian Testing
+#deb tor+http://vwakviie2ienjx6t.onion/debian/ testing main contrib non-free 
+#deb tor+http://sgvtcaew4bxjd7ln.onion/ testing/updates main contrib non-free 
+
+#Debian Sid
+#deb tor+http://vwakviie2ienjx6t.onion/debian/ sid main contrib non-free 
+#deb tor+http://sgvtcaew4bxjd7ln.onion/ sid/updates main contrib non-free 
