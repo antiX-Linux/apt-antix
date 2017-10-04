@@ -1,4 +1,0 @@
-# MX Linux Main and Test Repos. Use carefully.
-#deb http://mxrepo.com/mx/repo/ mx15 main non-free
-#deb http://mxrepo.com/mx/testrepo/ mx15 test
-#deb http://mxrepo.com/mx/repo/ mx16 main non-free
